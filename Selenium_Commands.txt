@@ -1,0 +1,307 @@
+Selenium 
+----------------
+
+1. Write code for handling multiple windows.
+
+package Project;
+
+import java.util.Iterator; 
+import java.util.Set; 
+//import org.openqa.selenium.By; 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+
+public class Handle_MutlipleWindows 
+{
+	
+	public static void main(String[] args) throws Exception 
+	{
+
+
+	System.setProperty("webdriver.chrome.driver","C://Chrome//chromedriver.exe"); 
+	WebDriver driver = new ChromeDriver();
+
+	driver.manage().window().maximize();
+
+	
+	driver.get("http://www.Facebook.com/");
+
+
+	String parent=driver.getWindowHandle();
+
+	Set<String>s=driver.getWindowHandles();
+
+	
+	Iterator<String> I1= s.iterator();
+
+	while(I1.hasNext())
+	{
+
+	String child_window=I1.next();
+
+
+	if(!parent.equals(child_window))
+	{
+	driver.switchTo().window(child_window);
+
+	System.out.println(driver.switchTo().window(child_window).getTitle());
+
+	driver.close();
+	}
+
+	}
+
+	driver.switchTo().window(parent);
+
+	}
+	}
+
+	
+2. Write code for handling Frames.
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.concurrent.TimeUnit;
+public class FrameSet {
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver", ""C://Chrome//chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      String url = "url with frames";
+      driver.get(url);
+      driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
+      
+      driver.switchTo().frame(0);
+      
+      driver.switchTo().frame(“<<name expression>>“);
+ 
+      WebElement name = driver.findElement(By.name(“frame-right”));
+      driver.switchTo().frame(driver.findElement(By.name(“<<name expression”)));
+      driver.quit();
+   }
+}
+
+3. Select multiple options from the dropdown.
+
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class DropDown {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+		
+        driver.get("https://demoqa.com/select-menu");
+
+        driver.manage().window().maximize();
+
+        Select select = new Select(driver.findElement(By.id("oldSelectMenu")));
+
+        List<WebElement> lst = select.getOptions();
+
+        System.out.println("The dropdown options are:");
+        for(WebElement options: lst)
+            System.out.println(options.getText());
+
+        System.out.println("Select the Option by Index 4");
+        select.selectByIndex(4);
+        System.out.println("Select value is: " + select.getFirstSelectedOption().getText());
+
+        System.out.println("Select the Option by Text Magenta");
+        select.selectByVisibleText("Magenta");
+        System.out.println("Select value is: " + select.getFirstSelectedOption().getText());
+
+
+        System.out.println("Select the Option by value 6");
+        select.selectByValue("6");
+        System.out.println("Select value is: " + select.getFirstSelectedOption().getText());
+
+        driver.quit();
+    }
+
+}
+
+
+4. How to do file upload in Selenium?
+
+
+package SeleniumPrograms;
+ 
+import java.io.IOException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+ 
+public class FileUpload {
+ 
+  public static void main(String[] args) throws IOException, InterruptedException {
+  WebDriver d = new FirefoxDriver();
+   d.manage().window().maximize();
+   d.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);    
+   d.get(“https://opensource-demo.orangehrmlive.com/“);      
+   d.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);      
+             
+   WebElement uname = d.findElement(By.id("txtUsername"));         
+   uname.sendKeys("Admin");
+     
+   WebElement pwd = d.findElement(By.name("txtPassword"));   
+   pwd.sendKeys("admin123");
+    
+   WebElement loginb = d.findElement(By.xpath("//input[@id='btnLogin']"));
+   loginb.click();                                  
+         
+ 
+   WebElement pim = d.findElement(By.id("menu_pim_viewPimModule"));
+    pim.click();                                          
+ 
+   WebElement config = d.findElement(By.id("menu_pim_Configuration"));
+    config.click();                                
+ 
+    WebElement data_imp = d.findElement(By.partialLinkText("Data "));
+    data_imp.click();                                
+         
+     
+    WebElement browser = d.findElement(By.xpath("//input[@id='pimCsvImport_csvFile']"));  
+    browser.click();                                
+    System.out.println(“1”);
+ 
+ 
+  Runtime.getRuntime().exec("C:\\Users\\Chait\\Desktop\\autoit\\fileupload.exe");
+  System.out.println("2");
+  Thread.sleep(3000);
+ 
+  WebElement upload = d.findElement(By.id("btnSave"));         
+   upload.click();
+   System.out.println("3");     
+  
+   System.out.println("File Uploaded Successfully");  
+             
+      }
+ 
+}
+
+
+5. Write code for taking Screenshot.
+
+
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.Test;
+public class TakeScreenshot {
+
+    @Test
+
+    public void testGuru99TakeScreenShot() throws Exception{
+
+		WebDriver driver ;
+    	System.setProperty("webdriver.gecko.driver","C:\\geckodriver.exe");
+    	driver = new FirefoxDriver();
+
+
+        driver.get("https://google.com");
+
+        this.takeSnapShot(driver, "c://test.png") ;     
+
+    }
+
+    public static void takeSnapShot(WebDriver webdriver,String fileWithPath) throws Exception{
+
+        TakesScreenshot scrShot =((TakesScreenshot)webdriver);
+
+                File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
+
+                File DestFile=new File(fileWithPath);
+
+                FileUtils.copyFile(SrcFile, DestFile);
+
+    }
+
+}
+
+
+6. Write code for handling multiple browsers and switch to new windows?
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class childWindow {
+    public static void main(String[] args) throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver","./src/resources/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://google.com");
+         driver.findElement(By.id("Button")).click();
+
+         WebElement text = driver.findElement(By.id("Heder"));
+      
+         System.out.println("Element found using text: " + text.getText());
+         driver.quit();
+    }
+}
+
+
+7. How to perform upload files using selenium?
+
+
+import java.io.IOException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+ 
+public class FileUpload {
+ 
+   public static void main(String[] args) throws IOException, InterruptedException {
+  
+   WebDriver d = new FirefoxDriver();
+   d.manage().window().maximize(); //always write wait code after this
+   d.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS); 
+   d.get("https://www.monsterindia.com/seeker/registration"); 
+   d.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+ 
+   JavascriptExecutor js = (JavascriptExecutor)d; 
+   js.executeScript("window.scrollBy(0,380)");
+   Thread.sleep(3000);
+ 
+   WebElement browse = d.findElement(By.xpath("//input[@id='file-upload']"));
+   browse.sendKeys("C:\\Users\\Chait\\Desktop\\Files\\Job Specification.txt");
+   System.out.println("File is Uploaded Successfully");
+ 
+   }
+ 
+}
+
+
+8. How to perform download files using selenium?
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+public class Program {
+    public static void main(String[] args) {
+        System.setProperty("webdriver.gecko.driver","C:\\geckodriver.exe");
+        String baseUrl = "https://facebook.com/test/upload/";
+        WebDriver driver = new FirefoxDriver();
+
+        driver.get(baseUrl);
+        WebElement uploadElement = driver.findElement(By.id("uploadfile_0"));
+        uploadElement.sendKeys("C:\\newhtml.html");
+        driver.findElement(By.id("terms")).click();
+        driver.findElement(By.name("send")).click();
+        }
+}
